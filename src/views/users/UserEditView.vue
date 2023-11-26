@@ -12,9 +12,9 @@ const getUserById = (userId) => {
   })
 }
 
-const createUser = () => {
-  axios.post('http://localhost:8080/v1/users', formData.value).then(res => {
-    alert('User created successfully');
+const editUser = (data) => {
+  axios.put(`http://localhost:8080/v1/users/${data.id}`, data).then(res => {
+    alert('User Edit successfully');
     formData.value = {
       username: '',
       password: '',
@@ -35,7 +35,7 @@ export default {
     return {
       formData,
       getUserById,
-      createUser
+      editUser
     }
   },
   computed: {
@@ -57,8 +57,13 @@ export default {
     <FormKit
       type="form"
       submit-label="Save"
-      @submit="createUser"
+      @submit="editUser"
     >
+      <FormKit
+        type="hidden"
+        name="id"
+        :value="formData.id"
+      ></FormKit>
       <FormKit
         type="text"
         label="Username"
@@ -134,6 +139,15 @@ export default {
         placeholder="Enter birthdate"
       />
     </FormKit>
+    <div style="display: flex;">
+      <span>
+        <FormKit
+          type="button"
+          label="Back"
+          @click="$router.push('/users')"
+        />
+      </span>
+    </div>
     <div style="display: none;">
       <pre wrap>{{ formData }}</pre>
     </div>

@@ -4,8 +4,9 @@ import { ref } from 'vue';
 
 const formData = ref(null);
 
-const createUser = () => {
-  axios.post('http://localhost:8080/v1/users', formData.value).then(res => {
+const createUser = (data) => {
+  console.log(data);
+  axios.post('http://localhost:8080/v1/users', data).then(res => {
     alert('User created successfully');
     formData.value = {
       username: '',
@@ -21,6 +22,15 @@ const createUser = () => {
   })
 }
 
+export default {
+  name: 'UserCreateView',
+  setup() {
+    return {
+      createUser
+    }
+  }
+}
+
 </script>
 
 <template>
@@ -30,6 +40,7 @@ const createUser = () => {
       type="form"
       submit-label="Create User"
       @submit="createUser"
+      v-model="formData"
     >
       <FormKit
         type="text"
